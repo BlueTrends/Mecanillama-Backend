@@ -2,17 +2,20 @@
 using Mecanillama.API.Customers.Domain.Repositories;
 using Mecanillama.API.Customers.Domain.Services;
 using Mecanillama.API.Customers.Domain.Services.Communication;
+using Mecanillama.API.Security.Domain.Repositories;
 using Mecanillama.API.Shared.Domain.Repositories;
 
 namespace Mecanillama.API.Customers.Services;
 
 public class CustomerService : ICustomerService {
     private readonly ICustomerRepository _customerRepository;
+    private readonly IUserRepository _userRepository;
     private readonly IUnitOfWork _unitOfWork;
 
-    public CustomerService(ICustomerRepository customerRepository, IUnitOfWork unitOfWork) {
+    public CustomerService(ICustomerRepository customerRepository, IUnitOfWork unitOfWork, IUserRepository userRepository) {
         _customerRepository = customerRepository;
         _unitOfWork = unitOfWork;
+        _userRepository = userRepository;
     }
 
     public async Task<IEnumerable<Customer>> ListAsync()
@@ -39,7 +42,12 @@ public class CustomerService : ICustomerService {
         return new CustomerResponse(existingCustomer);
     } 
 
-    public async Task<CustomerResponse> SaveAsync(Customer customer) {
+    public async Task<CustomerResponse> SaveAsync(Customer customer)
+    {
+        var existingUser = await _userRepository.FindByIdAsync(customer.UserId);
+        if (existingUser == null)
+            return new CustomerResponse("User not found.");
+        
         try
         {
             await _customerRepository.AddAsync(customer);
@@ -59,6 +67,9 @@ public class CustomerService : ICustomerService {
         {
             return new CustomerResponse("Customer not found ");
         }
+        var existingUser = await _userRepository.FindByIdAsync(customer.UserId);
+        if (existingUser == null)
+            return new CustomerResponse("User not found.");
 
         existingCustomer.Name = customer.Name;
 

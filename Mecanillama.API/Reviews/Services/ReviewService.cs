@@ -1,4 +1,5 @@
-﻿using Mecanillama.API.Reviews.Domain.Models;
+﻿using Mecanillama.API.Mechanics.Domain.Repositories;
+using Mecanillama.API.Reviews.Domain.Models;
 using Mecanillama.API.Reviews.Domain.Repositories;
 using Mecanillama.API.Reviews.Domain.Services;
 using Mecanillama.API.Reviews.Domain.Services.Communication;
@@ -9,11 +10,13 @@ namespace Mecanillama.API.Reviews.Services;
 public class ReviewService : IReviewService
 {
     private readonly IReviewRepository _reviewRepository;
+    private readonly IMechanicRepository _mechanicRepository;
     private readonly IUnitOfWork _unitOfWork;
 
-    public ReviewService(IReviewRepository reviewRepository, IUnitOfWork unitOfWork) {
+    public ReviewService(IReviewRepository reviewRepository, IUnitOfWork unitOfWork, IMechanicRepository mechanicRepository) {
         _reviewRepository = reviewRepository;
         _unitOfWork = unitOfWork;
+        _mechanicRepository = mechanicRepository;
     }
 
     public async Task<IEnumerable<Review>> ListAsync()
@@ -23,6 +26,12 @@ public class ReviewService : IReviewService
 
     public async Task<ReviewResponse> SaveAsync(Review review)
     {
+        var existingMechanic = await _mechanicRepository.FindByIdAsync(review.MechanicId);
+        if (existingMechanic == null)
+        {
+            return new ReviewResponse("Mechanic not found");
+        }
+        
         try
         {
             await _reviewRepository.AddAsync(review);
@@ -43,8 +52,15 @@ public class ReviewService : IReviewService
             return new ReviewResponse("Review not found ");
         }
 
-        existingReview.Comment = review.Comment;
+        var existingMechanic = await _mechanicRepository.FindByIdAsync(review.MechanicId);
+        if (existingMechanic == null)
+        {
+            return new ReviewResponse("Mechanic not found");
+        }
 
+        existingReview.Comment = review.Comment;
+        existingReview.Score = review.Score;
+        existingReview.MechanicId = review.MechanicId;
         try
         {
             _reviewRepository.Update(existingReview);

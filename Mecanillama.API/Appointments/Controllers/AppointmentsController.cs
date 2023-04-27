@@ -2,12 +2,15 @@
 using Mecanillama.API.Appointments.Domain.Models;
 using Mecanillama.API.Appointments.Domain.Services;
 using Mecanillama.API.Appointments.Resources;
+using Mecanillama.API.Security.Authorization.Attributes;
 using Mecanillama.API.Shared.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace Mecanillama.API.Appointments.Controllers;
 
+[Authorize]
+[ApiController]
 [Route("/api/v1/[controller]")] 
 [SwaggerTag("Create, read, update and delete Appointments")]
 public class AppointmentsController : ControllerBase

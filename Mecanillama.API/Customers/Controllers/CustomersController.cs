@@ -3,11 +3,14 @@ using Mecanillama.API.Customers.Domain.Model;
 using Microsoft.AspNetCore.Mvc;
 using Mecanillama.API.Customers.Domain.Services;
 using Mecanillama.API.Customers.Resources;
+using Mecanillama.API.Security.Authorization.Attributes;
 using Mecanillama.API.Shared.Extensions;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace Mecanillama.API.Customers.Controllers;
 
+[Authorize]
+[ApiController]
 [Route("/api/v1/[controller]")] 
 [SwaggerTag("Create, read, update and delete Customers")]
 public class CustomersController : ControllerBase {
