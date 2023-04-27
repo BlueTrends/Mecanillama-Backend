@@ -2,12 +2,15 @@
 using Mecanillama.API.Reviews.Domain.Models;
 using Mecanillama.API.Reviews.Domain.Services;
 using Mecanillama.API.Reviews.Resources;
+using Mecanillama.API.Security.Authorization.Attributes;
 using Mecanillama.API.Shared.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace Mecanillama.API.Reviews.Controllers;
 
+[Authorize]
+[ApiController]
 [Route("/api/v1/[controller]")]
 [SwaggerTag("Create, read, update and delete Reviews")]
 public class ReviewsController : ControllerBase

@@ -17,7 +17,7 @@ using Mecanillama.API.Reviews.Persistence.Repositories;
 using Mecanillama.API.Reviews.Services;
 using Mecanillama.API.Security.Authorization.Handlers.Implementations;
 using Mecanillama.API.Security.Authorization.Handlers.Interfaces;
-using Mecanillama.API.Security.Authorization.MIddleware;
+using Mecanillama.API.Security.Authorization.Middleware;
 using Mecanillama.API.Security.Authorization.Settings;
 using Mecanillama.API.Security.Domain.Repositories;
 using Mecanillama.API.Security.Domain.Services;
@@ -134,15 +134,12 @@ using (var context = scope.ServiceProvider.GetService<AppDbContext>())
 
 // Configure the HTTP request pipeline.
 
-if (app.Environment.IsDevelopment())
+app.UseSwagger();
+app.UseSwaggerUI(options =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI(options =>
-    {
-        options.SwaggerEndpoint("v1/swagger.json", "v1");
-        options.RoutePrefix = "swagger";
-    });
-}
+    options.SwaggerEndpoint("v1/swagger.json", "v1");
+    options.RoutePrefix = "swagger";
+});
 
 // Configure CORS
 

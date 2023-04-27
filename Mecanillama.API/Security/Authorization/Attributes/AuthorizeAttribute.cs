@@ -10,12 +10,13 @@ public class AuthorizeAttribute : Attribute, IAuthorizationFilter
     public void OnAuthorization(AuthorizationFilterContext context)
     {
         // If action is decorated with [AllowAnonymous] attribute
-        var allowAnonymous = context.ActionDescriptor
-            .EndpointMetadata.OfType<AllowAnonymousAttribute>().Any();
+        var allowAnonymous = context.ActionDescriptor.EndpointMetadata.OfType<AllowAnonymousAttribute>().Any();
+        
+        // Then skip authorization process
         if (allowAnonymous)
-            // Then skip authorization process
             return;
-        // Otherwise, perform Authorization process
+
+        // Otherwise, perform authorization process
         var user = (User)context.HttpContext.Items["User"];
         if (user == null)
             context.Result = new JsonResult(new { message = "Unauthorized" })

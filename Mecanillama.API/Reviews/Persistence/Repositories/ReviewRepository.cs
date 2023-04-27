@@ -15,7 +15,9 @@ public class ReviewRepository : BaseRepository, IReviewRepository
 
     public async Task<IEnumerable<Review>> ListAsync()
     {
-        return await _context.Reviews.ToListAsync();
+        return await _context.Reviews
+            .Include(p => p.Mechanic)
+            .ToListAsync();
     }
 
     public async Task AddAsync(Review review)
@@ -25,7 +27,9 @@ public class ReviewRepository : BaseRepository, IReviewRepository
 
     public async Task<Review> FindByIdAsync(int id)
     {
-        return await _context.Reviews.FindAsync(id);
+        return await _context.Reviews
+            .Include(p => p.Mechanic)
+            .FirstOrDefaultAsync(p => p.Id == id);
     }
 
     public void Update(Review review)

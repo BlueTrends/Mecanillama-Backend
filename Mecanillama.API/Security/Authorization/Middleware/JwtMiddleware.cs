@@ -5,13 +5,12 @@ using Mecanillama.API.Security.Domain.Services;
 using Mecanillama.API.Security.Exceptions;
 using Microsoft.Extensions.Options;
 
-namespace Mecanillama.API.Security.Authorization.MIddleware;
+namespace Mecanillama.API.Security.Authorization.Middleware;
 
 public class JwtMiddleware
 {
     private readonly RequestDelegate _next;
     private readonly AppSettings _appSettings;
-
 
     public JwtMiddleware(RequestDelegate next, IOptions<AppSettings> appSettings)
     {
@@ -24,10 +23,8 @@ public class JwtMiddleware
         var token = context.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
 
         var userId = handler.ValidateToken(token);
-
         if (userId != null)
         {
-            // On successful JWT validation, attach user info to context
             context.Items["User"] = await userService.GetByIdAsync(userId.Value);
         }
 
