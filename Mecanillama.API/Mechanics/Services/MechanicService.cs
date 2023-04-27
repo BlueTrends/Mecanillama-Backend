@@ -3,6 +3,7 @@ using Mecanillama.API.Mechanics.Domain.Models;
 using Mecanillama.API.Mechanics.Domain.Repositories;
 using Mecanillama.API.Mechanics.Domain.Services;
 using Mecanillama.API.Mechanics.Domain.Services.Communication;
+using Mecanillama.API.Security.Domain.Repositories;
 using Mecanillama.API.Shared.Domain.Repositories;
 
 namespace Mecanillama.API.Mechanics.Services;
@@ -10,11 +11,13 @@ namespace Mecanillama.API.Mechanics.Services;
 public class MechanicService : IMechanicService
 {
     private readonly IMechanicRepository _mechanicRepository;
+    private readonly IUserRepository _userRepository;
     private readonly IUnitOfWork _unitOfWork;
 
-    public MechanicService(IMechanicRepository mechanicRepository, IUnitOfWork unitOfWork) {
+    public MechanicService(IMechanicRepository mechanicRepository, IUnitOfWork unitOfWork, IUserRepository userRepository) {
         _mechanicRepository = mechanicRepository;
         _unitOfWork = unitOfWork;
+        _userRepository = userRepository;
     }
 
     public async Task<IEnumerable<Mechanic>> ListAsync()
@@ -44,6 +47,10 @@ public class MechanicService : IMechanicService
 
     public async Task<MechanicResponse> SaveAsync(Mechanic mechanic)
     {
+        var existingUser = await _userRepository.FindByIdAsync(mechanic.UserId);
+        if (existingUser == null)
+            return new MechanicResponse("User not found.");
+        
         try
         {
             await _mechanicRepository.AddAsync(mechanic);
@@ -63,6 +70,10 @@ public class MechanicService : IMechanicService
         {
             return new MechanicResponse("Mechanic not found ");
         }
+        
+        var existingUser = await _userRepository.FindByIdAsync(mechanic.UserId);
+        if (existingUser == null)
+            return new MechanicResponse("User not found.");
 
         existingMechanic.Name = mechanic.Name;
 

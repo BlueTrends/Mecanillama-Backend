@@ -2,12 +2,15 @@
 using Mecanillama.API.Mechanics.Domain.Models;
 using Mecanillama.API.Mechanics.Domain.Services;
 using Mecanillama.API.Mechanics.Resources;
+using Mecanillama.API.Security.Authorization.Attributes;
 using Mecanillama.API.Shared.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace Mecanillama.API.Mechanics.Controllers;
 
+[Authorize]
+[ApiController]
 [Route("/api/v1/[controller]")]
 [SwaggerTag("Create, read, update and delete Mechanics")]
 public class MechanicsController : ControllerBase

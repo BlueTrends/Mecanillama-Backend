@@ -10,4 +10,6 @@ public class SaveReviewResource
     [Required]
     public int Score { get; set; }
 
+    [Required]
+    public int MechanicId { get; set; }
 }

@@ -3,7 +3,7 @@ using System.Net.Mime;
 using System.Text.Json;
 using Mecanillama.API.Security.Exceptions;
 
-namespace Mecanillama.API.Security.Authorization.MIddleware;
+namespace Mecanillama.API.Security.Authorization.Middleware;
 
 public class ErrorHandlerMiddleware
 {
@@ -28,23 +28,24 @@ public class ErrorHandlerMiddleware
             switch (error)
             {
                 case AppException e:
-                    // Custom Application Exception
+                    // Custom Application Error
                     response.StatusCode = (int)HttpStatusCode.BadRequest;
                     break;
-                
                 case KeyNotFoundException e:
                     // Not found error
                     response.StatusCode = (int)HttpStatusCode.NotFound;
                     break;
-                
                 default:
-                    // Unhandled error
+                    // Unhandled Error
                     response.StatusCode = (int)HttpStatusCode.InternalServerError;
                     break;
             }
 
             var result = JsonSerializer.Serialize(new { message = error?.Message });
+            
             await response.WriteAsync(result);
         }
+        
+        
     }
 }
