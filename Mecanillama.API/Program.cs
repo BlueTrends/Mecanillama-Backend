@@ -50,16 +50,16 @@ builder.Services.AddSwaggerGen(options =>
         Version = "v1",
         Title = "Mecanillama API",
         Description = "Mecanillama RESTful API",
-        TermsOfService = new Uri("https://mecanillama.github.io/Landing-Page/"),
+        TermsOfService = new Uri("https://bluetrends.github.io/Mecanillama-Landing-Page/"),
         Contact = new OpenApiContact
         {
             Name = "Mecanillama.studio",
-            Url = new Uri("https://mecanillama.github.io/Landing-Page/")
+            Url = new Uri("https://bluetrends.github.io/Mecanillama-Landing-Page/")
         },
         License = new OpenApiLicense
         {
             Name = "Mecanillama Resources License",
-            Url = new Uri("https://mecanillama.github.io/Landing-Page/")
+            Url = new Uri("https://bluetrends.github.io/Mecanillama-Landing-Page/")
         }
     });
     options.EnableAnnotations();
