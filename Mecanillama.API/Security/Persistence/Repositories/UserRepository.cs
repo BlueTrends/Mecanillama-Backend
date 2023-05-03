@@ -19,9 +19,11 @@ public class UserRepository: BaseRepository, IUserRepository
         return await _context.Users.ToListAsync();
     }
 
-    public async Task AddAsync(User user)
+    public void AddAsync(User user, string name)
     {
-        await _context.Users.AddAsync(user);
+        var execute = $" call SignUpAndCreateProfile('{user.Email}' , '{user.PasswordHash}' , '{user.Role}' ,  '{name}');";
+        _context.Database.ExecuteSqlRaw(execute);
+
     }
 
     public async Task<User> FindByIdAsync(long id)

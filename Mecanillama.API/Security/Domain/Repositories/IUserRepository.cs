@@ -5,7 +5,7 @@ namespace Mecanillama.API.Security.Domain.Repositories;
 public interface IUserRepository
 {
     Task<IEnumerable<User>> ListAsync();
-    Task AddAsync(User user);
+    void AddAsync(User user, string name);
     Task<User> FindByIdAsync(long id);
     Task<User> FindByEmailAsync(string username);
     bool ExistsByEmail(string username);

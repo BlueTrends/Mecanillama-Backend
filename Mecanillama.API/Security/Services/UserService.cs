@@ -81,7 +81,7 @@ public class UserService : IUserService
         // Save User
         try
         {
-            await _userRepository.AddAsync(user);
+             _userRepository.AddAsync(user, request.Name);
             await _unitOfWork.CompleteAsync();
         }
         catch (Exception e)
