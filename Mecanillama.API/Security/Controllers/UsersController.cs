@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Mecanillama.API.Security.Controllers;
 
-[Authorize]
 [ApiController]
 [Route("/api/v1/[controller]")]
 public class UsersController : ControllerBase

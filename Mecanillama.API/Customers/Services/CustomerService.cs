@@ -67,11 +67,26 @@ public class CustomerService : ICustomerService {
         {
             return new CustomerResponse("Customer not found ");
         }
-        var existingUser = await _userRepository.FindByIdAsync(customer.UserId);
+
+        long id_user = 0;
+        if (customer.UserId == 0)
+        {
+            id_user = existingCustomer.UserId;
+        }
+        else
+        {
+            id_user = customer.UserId;
+        }
+
+        var existingUser = await _userRepository.FindByIdAsync(id_user);
         if (existingUser == null)
             return new CustomerResponse("User not found.");
 
         existingCustomer.Name = customer.Name;
+        existingCustomer.Address = customer.Address;
+        existingCustomer.CarMake = customer.CarMake;
+        existingCustomer.UserId = id_user;
+
 
         try
         {

@@ -70,12 +70,25 @@ public class MechanicService : IMechanicService
         {
             return new MechanicResponse("Mechanic not found ");
         }
-        
-        var existingUser = await _userRepository.FindByIdAsync(mechanic.UserId);
+
+        long id_user = 0;
+        if (mechanic.UserId == 0)
+        {
+            id_user = existingMechanic.UserId;
+        }
+        else 
+        {
+            id_user = mechanic.UserId;
+        }
+        var existingUser = await _userRepository.FindByIdAsync(id_user);
         if (existingUser == null)
             return new MechanicResponse("User not found.");
 
         existingMechanic.Name = mechanic.Name;
+        existingMechanic.Address = mechanic.Address;
+        existingMechanic.Phone = mechanic.Phone;
+        existingMechanic.UserId = id_user;
+        existingMechanic.Description = mechanic.Description;
 
         try
         {
