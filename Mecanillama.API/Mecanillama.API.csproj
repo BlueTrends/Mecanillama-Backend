@@ -18,6 +18,7 @@
         <PackageReference Include="MSTest.TestAdapter" Version="3.0.4" />
         <PackageReference Include="MSTest.TestFramework" Version="3.0.4" />
         <PackageReference Include="MySql.EntityFrameworkCore" Version="6.0.1" />
+        <PackageReference Include="SpecFlow" Version="4.0.31-beta" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
         <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.3.1" />
         <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.19.0" />
